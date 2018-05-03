@@ -11,7 +11,6 @@ var networkSetting = {};
 var startOption = {};
 // CONNETO: variables to use
 
-console.log();
 // Called by the common.js module.
 function attachListeners() {
     changeUiModeForNaClLoad();
@@ -28,20 +27,12 @@ function attachListeners() {
     //$('#backIcon').on('click', showHostsAndSettingsMode);
     //$('#quitCurrentApp').on('click', stopGameWithConfirmation);
 
-    // CONNETO: jQuery handler ï¿½ï¿½ï¿½
+    // CONNETO: jQuery handler µî·Ï
     $('#showLoginView').on('click', showLoginModal);
-    // CONNETO: jQuery handler ï¿½ï¿½ï¿½
+    // CONNETO: jQuery handler µî·Ï
+
     $(window).resize(fullscreenNaclModule);
-    if(chrome.app.window.current()){
-        chrome.app.window.current().onMaximized.addListener(fullscreenChromeWindow);
-    }
-    chrome.runtime.getBackgroundPage(function (backgroundPage) {
-        chrome.app.window.current().onClosed.addListener(function () {
-            console.log("This won't appear anywhere since (this.)console doesn't exist anymore");
-            backgroundPage.console.log("This will appear in the background page console, which you can open from the Extensions settings page");
-            sendMsgtoCentralServer({sdfijdsfiodsfjsf:"asdadsdsa", sdfsdfdfsfds: "sdfsdfioe4wweui"});
-        });
-    });
+    chrome.app.window.current().onMaximized.addListener(fullscreenChromeWindow);
 }
 
 function fullscreenChromeWindow() {
@@ -65,10 +56,8 @@ function loadWindowState() {
             : windowState;
 
         // subscribe to chrome's windowState events
-        if(chrome.app.window.current()){
-            chrome.app.window.current().onFullscreened.addListener(onFullscreened);
-            chrome.app.window.current().onBoundsChanged.addListener(onBoundsChanged);
-        }
+        chrome.app.window.current().onFullscreened.addListener(onFullscreened);
+        chrome.app.window.current().onBoundsChanged.addListener(onBoundsChanged);
     });
 }
 
@@ -87,7 +76,7 @@ function onBoundsChanged() {
 }
 
 function changeUiModeForNaClLoad() {
-    // CONNETO: È­ï¿½ï¿½ï¿½ï¿½È¯ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ï¿½ï¿½ï¿½
+    // CONNETO: È­¸éÀüÈ¯ °ü·Ã ÄÚµå¼öÁ¤
     //$('#main-navigation').children().hide();
     $("#main-content").children().not("#listener, #naclSpinner").hide();
     $('#naclSpinnerMessage').text('Loading Moonlight plugin...');
@@ -282,7 +271,7 @@ function moduleDidLoad() {
 }
 
 // pair to the given NvHTTP host object.  Returns whether pairing was successful.
-function pairTo(nvhttpHost, onSuccess, onFailure, randomNumber) {
+function pairTo(nvhttpHost, onSuccess, onFailure) {
     if(!pairingCert) {
         snackbarLog('ERROR: cert has not been generated yet. Is NaCl initialized?');
         console.warn('%c[index.js]', 'color: green;', 'User wants to pair, and we still have no cert. Problem = very yes.');
@@ -435,7 +424,7 @@ function addHost(hostIp, randomNumber, resolve, reject) {
 //CONNETO: making new addHost function 
 
 
-// CONNETO: LoginView ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ Ã¢ ï¿½ï¿½ï¿½ï¿½
+// CONNETO: LoginView º¸¿©ÁÖ´Â Ã¢ »ý¼º
 function showLoginModal() {
     var modal = document.querySelector('#loginDialog');
     modal.showModal();
@@ -449,66 +438,64 @@ function showLoginModal() {
     $('#continueLogin').on('click', function() {
         // DataTransmission via TCP Socket
         var hostList = [];
-        for (var hostId in hosts) {	//hostsï¿½ï¿½ ï¿½ï¿½ï¿½ hostï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Çµï¿½ ï¿½ï¿½ï¿½ï¿½
+        for (var hostId in hosts) {	//hosts´Â ¸ðµç hostµéÀÇ Á¤º¸¸¦ ´ã°í ÀÖ´Â »çÀü¿¡ Á¤ÀÇµÈ º¯¼ö
             hostList.push({
-                "hostId": hostId,		//hostï¿½ï¿½ id(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½)
-                "hostname": hosts[hostId].hostname,	//hostï¿½ï¿½ ï¿½Ì¸ï¿½
-                "online": hosts[hostId].online,		//hostï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ onlineï¿½ï¿½ï¿½ï¿½
-                "paired": hosts[hostId].paired,		//hostï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ pairingï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                "hostId": hostId,		//hostÀÇ id(°íÀ¯ÇÑ °ª)
+                "hostname": hosts[hostId].hostname,	//hostÀÇ ÀÌ¸§
+                "online": hosts[hostId].online,		//host°¡ ÇöÀç onlineÀÎÁö
+                "paired": hosts[hostId].paired,		//host¿Í ÇöÀç pairingµÈ »óÅÂÀÎÁö
                 "hostIpaddress": hosts[hostId].address
             });
         }
-        chrome.runtime.getBackgroundPage(function (backgroundPage) {
-            backgroundPage.sendMsgtoCentralServer({
-                
-                header: {
-                    type: 'Request',
-                    token: '',
-                    command: 'login',
-                    source: 'CONNETO',
-                    dest: 'DB'
-                },
-                body: {
-                    userId: $('#userId').val(),
-                    userPW: $('#userPassword').val(),
-                    hostList
-                }
-            });
-            // modal.close();
+        sendMsgtoCentralServer({
+            
+            header: {
+                type: 'Request',
+                token: '',
+                command: 'login',
+                source: 'CONNETO',
+                dest: 'DB'
+            },
+            body: {
+                userId: $('#userId').val(),
+                userPW: $('#userPassword').val(),
+                hostList
+            }
         });
-    })
+        // modal.close();
+    });
 }
-// CONNETO: LoginView ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ Ã¢ ï¿½ï¿½ï¿½ï¿½
+// CONNETO: LoginView º¸¿©ÁÖ´Â Ã¢ »ý¼º
 
 // host is an NvHTTP object
 // CONNETO: unnecessary function
-function addHostToGrid(host, ismDNSDiscovered) {
+/*function addHostToGrid(host, ismDNSDiscovered) {
 
-    // var outerDiv = $("<div>", {class: 'host-container mdl-card mdl-shadow--4dp', id: 'host-container-' + host.serverUid, role: 'link', tabindex: 0, 'aria-label': host.hostname });
-    // var cell = $("<div>", {class: 'mdl-card__title mdl-card--expand', id: 'hostgrid-' + host.serverUid });
-    // $(cell).prepend($("<h2>", {class: "mdl-card__title-text", html: host.hostname}));
-    // var removalButton = $("<div>", {class: "remove-host", id: "removeHostButton-" + host.serverUid, role: 'button', tabindex: 0, 'aria-label': 'Remove host ' + host.hostname});
-    // removalButton.off('click');
-    // removalButton.click(function () {
-    //     removeClicked(host);
-    // });
-    // cell.off('click');
-    // cell.click(function () {
-    //     hostChosen(host);
-    // });
-    // outerDiv.keypress(function(e){
-    //   if(e.keyCode == 13) {
-    //     hostChosen(host);
-    //   }
-    // });
-    // $(outerDiv).append(cell);
-    // if (!ismDNSDiscovered) {
-    //     // we don't have the option to delete mDNS hosts.  So don't show it to the user.
-    //     $(outerDiv).append(removalButton);
-    // }
-    // $('#host-grid').append(outerDiv);
+    var outerDiv = $("<div>", {class: 'host-container mdl-card mdl-shadow--4dp', id: 'host-container-' + host.serverUid, role: 'link', tabindex: 0, 'aria-label': host.hostname });
+    var cell = $("<div>", {class: 'mdl-card__title mdl-card--expand', id: 'hostgrid-' + host.serverUid });
+    $(cell).prepend($("<h2>", {class: "mdl-card__title-text", html: host.hostname}));
+    var removalButton = $("<div>", {class: "remove-host", id: "removeHostButton-" + host.serverUid, role: 'button', tabindex: 0, 'aria-label': 'Remove host ' + host.hostname});
+    removalButton.off('click');
+    removalButton.click(function () {
+        removeClicked(host);
+    });
+    cell.off('click');
+    cell.click(function () {
+        hostChosen(host);
+    });
+    outerDiv.keypress(function(e){
+      if(e.keyCode == 13) {
+        hostChosen(host);
+      }
+    });
+    $(outerDiv).append(cell);
+    if (!ismDNSDiscovered) {
+        // we don't have the option to delete mDNS hosts.  So don't show it to the user.
+        $(outerDiv).append(removalButton);
+    }
+    $('#host-grid').append(outerDiv);
     hosts[host.serverUid] = host;
-}
+}*/
 // CONNETO: unnecessary function
 
 
@@ -721,7 +708,7 @@ function startGame(host, appID, option) {
     // CONNETO: add option argument to automatic setting of resolution, framerate
     if (!host || !host.paired) {
         console.log('attempted to start a game, but `host` did not initialize properly. Failing!');
-        return Promise.reject(new Error('attempted to start a game, but `host` did not initialize properly. Failing!'));
+        return;
     }
 
     // refresh the server info, because the user might have quit the game.
@@ -749,6 +736,7 @@ function startGame(host, appID, option) {
                         });
                         quitAppDialog.close();
                     });*/
+
                     return;
                 }, function (failedCurrentApp) {
                     console.error('[index.js, startGame]','color: green;', 'Failed to get the current running app from host! Returned error was:' + failedCurrentApp, '\n Host object:', host, host.toString());
@@ -765,16 +753,14 @@ function startGame(host, appID, option) {
             // we told the user it was in Mbps. We're dirty liars and use Kbps behind their back.
             // CONNETO: add option argument to automatic setting of resolution, framerate
             //var frameRate, streamWidth, streamHeight, bitrate, remote_audio_enabled;
-            var streamWidth, streamHeight, bitrate, remote_audio_enabled, frameRate, optimize;
-            console.log(option);
+            var streamWidth, streamHeight, bitrate, remote_audio_enabled, frameRate;
             if (option) {
 
                 streamWidth = option.streamWidth;
                 streamHeight = option.streamHeight;
-                bitrate = parseInt(option.bitrate) * 1000;
+                bitrate = parseInt(option.bitRate) * 1000;
                 remote_audio_enabled = option.remote_audio_enabled;
-                frameRate = option.frameRate;
-                optimize = option.optimize;
+                frameRate = option.frameRate; 
                 startOption = option;
             }
             // CONNETO: add option argument to automatic setting of resolution, framerate
@@ -794,7 +780,6 @@ function startGame(host, appID, option) {
                 ).then(function (ret) {
                     sendMessage('startRequest', [host.address, streamWidth, streamHeight, frameRate,
                             bitrate.toString(), rikey, rikeyid.toString(), host.appVersion]);
-                    api = host;
                 }, function (failedResumeApp) {
                     console.eror('%c[index.js, startGame]', 'color:green;', 'Failed to resume the app! Returned error was' + failedResumeApp);
                     return;
@@ -813,7 +798,6 @@ function startGame(host, appID, option) {
                     ).then(function (ret) {
                 sendMessage('startRequest', [host.address, streamWidth, streamHeight, frameRate,
                         bitrate.toString(), rikey, rikeyid.toString(), host.appVersion]);
-                    api = host;
             }, function (failedLaunchApp) {
                 console.error('%c[index.js, launchApp]','color: green;','Failed to launch app width id: ' + appID + '\nReturned error was: ' + failedLaunchApp);
                 return;
@@ -828,7 +812,7 @@ function playGameMode() {
     console.log('%c[index.js, playGameMode]', 'color:green;', 'Entering play game mode');
     isInGame = true;
 
-    $("#main-navigation").hide();
+    //$("#main-navigation").hide();
     $("#main-content").children().not("#listener, #loadingSpinner").hide();
     $("#main-content").addClass("fullscreen");
 
@@ -898,14 +882,14 @@ function stopGame(host, callbackFunction) {
         return;    
     }
     //////////////////////////
-    
+
     isInGame = false;
 
     if (!host.paired) {
         return;
     }
 
-    return host.refreshServerInfo().then(function (ret) {
+    host.refreshServerInfo().then(function (ret) {
         host.getAppById(host.currentGame).then(function (runningApp) {
             if (!runningApp) {
                 snackbarLog('Nothing was running');
@@ -918,7 +902,7 @@ function stopGame(host, callbackFunction) {
                     //showAppsMode();
                     //stylizeBoxArt(host, runningApp.id);
                     //if (typeof(callbackFunction) === "function") callbackFunction();
-                    return appName;
+					return;
                 }, function (failedRefreshInfo2) {
                     console.error('%c[index.js, stopGame]', 'color:green;', 'Failed to refresh server info! Returned error was:' + failedRefreshInfo + ' and failed server was:', host, host.toString());
                 });
@@ -1044,11 +1028,10 @@ function onWindowLoad() {
     console.log('Window loaded.' );
     // don't show the game selection div
     $('#gameSelection').css('display', 'none');
-    
+
     loadWindowState();
-    
-    //CONNETO: removing unnecessaries
-    /*if(chrome.storage) {
+
+    if(chrome.storage) {
         // load stored resolution prefs
         chrome.storage.sync.get('resolution', function(previousValue) {
             if(previousValue.resolution != null) {
@@ -1098,8 +1081,7 @@ function onWindowLoad() {
             $('#bitrateSlider')[0].MaterialSlider.change(previousValue.bitrate != null ? previousValue.bitrate : '10');
             updateBitrateField();
         });
-	
-    }*/
+    }
 }
 
 

@@ -377,8 +377,10 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
 
-    if (loadFunction) {
+    if (loadFunction && body.dataset.tools) {
       var toolchains = body.dataset.tools.split(' ');
+      // var toolchains = 'pnacl';
+      //var toolchains = [];
       var configs = body.dataset.configs.split(' ');
 
       var attrs = {};
@@ -394,7 +396,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
       var tc = toolchains.indexOf(searchVars.tc) !== -1 ?
           searchVars.tc : toolchains[0];
-
       // If the config value is included in the search vars, use that.
       // Otherwise default to Release if it is valid, or the first value if
       // Release is not valid.

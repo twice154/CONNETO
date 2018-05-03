@@ -30,10 +30,9 @@
         "power",
         "overrideEscFullscreen", {
         "socket": [
-            "tcp-connect",
-            "tcp-listen:*:*",
-            "resolve-host",
-            "udp-bind:*:*",
+            "tcp-connect", 
+            "resolve-host", 
+            "udp-bind:*:*", 
             "udp-send-to:*:*"
         ] }
     ],

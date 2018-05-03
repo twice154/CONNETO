@@ -43,13 +43,10 @@ function handleMessage(msg) {
             api.refreshServerInfo().then(function (ret) {  // refresh the serverinfo to acknowledge the currently running app
                 api.getAppList().then(function (appList) {
                     appList.forEach(function (app) {
-                        //stylizeBoxArt(api, app.id);  // and reapply stylization to indicate what's currently running
+                        stylizeBoxArt(api, app.id);  // and reapply stylization to indicate what's currently running
                     });
                 });
-                //CONNETO: return to start menu when game has been terminated
-                //showApps(api);
-                showHostsAndSettingsMode();
-                //CONNETO: return to start menu when game has been terminated
+                showApps(api);
 
                 isInGame = false;
 

@@ -316,7 +316,8 @@ NvHTTP.prototype = {
 
             if ($root.attr("status_code") != 200) {
                 // TODO: Bubble up an error here
-								console.error('%c[utils.js, utils.js,  getAppListWithCacheFlush]', 'color: gray;', 'Applist request failed', $root.attr("status_code"));
+                console.log($xml);
+				console.error('%c[utils.js, utils.js,  getAppListWithCacheFlush]', 'color: gray;', 'Applist request failed', $root.attr("status_code"));
                 return [];
             }
 
