@@ -1,7 +1,7 @@
 # CONNETO
 
 CONNETO는 NVIDIA의 Gamstream Protocol을 구현한 [Moonlight for Chrome](http://moonlight-stream.com)에 기반한 Chrome app입니다.
-CONNETO는 powerful desktop에서 실행할 수 있는 고사양의 게임들을 laptop에서 원격으로 즐길 수 있게 해줍니다.
+CONNETO는 powerful desktop에서 실행할 수 있는 고사양의 게임들을 laptop에서 원격으로 매우 낮은 딜레이로 즐길 수 있게 해줍니다.
 사용을 위해서는 [WEB interface](https://github.com/twice154/react_server)가 필요합니다.
 
 ## Features
