@@ -28,7 +28,6 @@ Server:
 
 Client: 
 - Chrome browser on Windows, Mac OS X, Linux, or Chrome OS
-* [GameStream-compatible](http://shield.nvidia.com/play-pc-games/) computer with GTX 600+ series desktop or mobile GPU (for the PC from which you're streaming)
 
 Both Sides: 
 * High-end wireless router (802.11n dual-band recommended) or wired network
