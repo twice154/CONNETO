@@ -13,8 +13,14 @@ CONNETO는 powerful desktop에서 실행할 수 있는 고사양의 게임들을
 * Use mDNS to scan for compatible GeForce Experience (GFE) machines on the network
 
 ## Installation
+Server:
 * Download [GeForce Experience](http://www.geforce.com/geforce-experience) and install on your GameStream-compatible PC
-* Install the [latest release](https://github.com/moonlight-stream/moonlight-chrome/releases)
+
+Client:
+1. Install the Chrome Native Client SDK and download the current Pepper SDK
+2. Set the `NACL_SDK_ROOT` environment variable to your Pepper SDK folder. If you need more detailed instructions, see [here](https://github.com/google/pepper.js/wiki/Getting-Started)
+3. Run `git submodule update --init --recursive` from within `moonlight-chrome/`
+4. Run `make` from within the `moonlight-chrome/` repo
 
 ## Requirements
 Server: 
@@ -26,12 +32,6 @@ Client:
 
 Both Sides: 
 * High-end wireless router (802.11n dual-band recommended) or wired network
-
-## Building
-1. Install the Chrome Native Client SDK and download the current Pepper SDK
-2. Set the `NACL_SDK_ROOT` environment variable to your Pepper SDK folder. If you need more detailed instructions, see [here](https://github.com/google/pepper.js/wiki/Getting-Started)
-3. Run `git submodule update --init --recursive` from within `moonlight-chrome/`
-4. Run `make` from within the `moonlight-chrome/` repo
 
 ## Testing
 1. Open the Extensions page in Chrome
